@@ -9,7 +9,6 @@ cls()
 -- 3 : changement de niveau
 
 shots = {}
-mountains ={}
 monsters={}
 shots_m={}
 
@@ -180,6 +179,7 @@ function update_game()
   end
   mos_t=mos_t0
  end
+ -- buttons
  if (btn(0) and xp > 0 ) then xp=xp-1 end
  if (btn(1) and xp < 120) then xp=xp+1 end
  if (btn(2) and yp > 0) then
@@ -194,12 +194,21 @@ function update_game()
    th=th+1/100
   end
  end
+ if (btn(5)) then
+  if (timershot < 1) then
+   add_shot_player(xp+8,yp)
+   timershot=10
+   sfx(00)
+  end
+ end
+ -- player shots loop
  for shot in all(shots) do
   shot.x=shot.x+3
   if (shot.x>150) do
    del(shots,shot)
   end
  end
+ -- enemy shots loop
  for shot in all(shots_m) do
   check_s_p_col(shot)
   shot.x=shot.x-2
@@ -207,6 +216,7 @@ function update_game()
    del(shots_m,shot)
   end
  end
+ -- enemies loop
  for m in all(monsters) do
   m.x=m.x-m.sx
   m.y=m.y-m.sy
@@ -221,13 +231,7 @@ function update_game()
   end
   check_m_p_col(m)
  end
- if (btn(5)) then
-  if (timershot < 1) then
-   add_shot_player(xp+8,yp)
-   timershot=10
-   sfx(00)
-  end
- end
+ -- angle
  if (th > 0) then
   th=th-1/200
  end
